@@ -1,4 +1,21 @@
+/* eslint-disable indent */
 'use strict';
+
+let fireballSize = 22;
+let getFireballSpeed = function (isMovingLeft) {
+  return isMovingLeft ? 2 : 5;
+};
+let wizardWidth = 70;
+let getWizardHeight = function () {
+  return 1.337 * wizardWidth;
+};
+let wizardSpeed = 3;
+let getWizardX = function (gameFieldWidth) {
+  return (gameFieldWidth - wizardWidth) / 2;
+};
+let getWizardY = function (gameFieldHeight) {
+  return gameFieldHeight / 3;
+};
 
 window.GameConstants = {
   Fireball: {
@@ -27,19 +44,19 @@ window.Game = (function () {
    * @const
    * @type {number}
    */
-  var HEIGHT = 300;
+  let HEIGHT = 300;
 
   /**
    * @const
    * @type {number}
    */
-  var WIDTH = 700;
+  let WIDTH = 700;
 
   /**
    * ID уровней.
    * @enum {number}
    */
-  var Level = {
+  let Level = {
     INTRO: 0,
     MOVE_LEFT: 1,
     MOVE_RIGHT: 2,
@@ -47,13 +64,13 @@ window.Game = (function () {
     HIT_THE_MARK: 4
   };
 
-  var NAMES = ['Кекс', 'Катя', 'Игорь'];
+  let NAMES = [`Кекс`, `Катя`, `Игорь`];
 
   /**
    * Порядок прохождения уровней.
    * @type {Array.<Level>}
    */
-  var LevelSequence = [
+  let LevelSequence = [
     Level.INTRO
   ];
 
@@ -61,13 +78,13 @@ window.Game = (function () {
    * Начальный уровень.
    * @type {Level}
    */
-  var INITIAL_LEVEL = LevelSequence[0];
+  let INITIAL_LEVEL = LevelSequence[0];
 
   /**
    * Допустимые виды объектов на карте.
    * @enum {number}
    */
-  var ObjectType = {
+  let ObjectType = {
     ME: 0,
     FIREBALL: 1
   };
@@ -76,7 +93,7 @@ window.Game = (function () {
    * Допустимые состояния объектов.
    * @enum {number}
    */
-  var ObjectState = {
+  let ObjectState = {
     OK: 0,
     DISPOSED: 1
   };
@@ -85,7 +102,7 @@ window.Game = (function () {
    * Коды направлений.
    * @enum {number}
    */
-  var Direction = {
+  let Direction = {
     NULL: 0,
     LEFT: 1,
     RIGHT: 2,
@@ -97,33 +114,33 @@ window.Game = (function () {
    * Карта спрайтов игры.
    * @type {Object.<ObjectType, Object>}
    */
-  var SpriteMap = {};
-  var REVERSED = '-reversed';
+  let SpriteMap = {};
+  let REVERSED = `-reversed`;
 
   SpriteMap[ObjectType.ME] = {
     width: 61,
     height: 84,
-    url: 'img/wizard.gif'
+    url: `img/wizard.gif`
   };
 
   // TODO: Find a clever way
   SpriteMap[ObjectType.ME + REVERSED] = {
     width: 61,
     height: 84,
-    url: 'img/wizard-reversed.gif'
+    url: `img/wizard-reversed.gif`
   };
 
   SpriteMap[ObjectType.FIREBALL] = {
     width: 24,
     height: 24,
-    url: 'img/fireball.gif'
+    url: `img/fireball.gif`
   };
 
   /**
    * Правила перерисовки объектов в зависимости от состояния игры.
    * @type {Object.<ObjectType, function(Object, Object, number): Object>}
    */
-  var ObjectsBehaviour = {};
+  let ObjectsBehaviour = {};
 
   /**
    * Обновление движения мага. Движение мага зависит от нажатых в данный момент
@@ -215,7 +232,7 @@ window.Game = (function () {
    * нужно прервать.
    * @enum {number}
    */
-  var Verdict = {
+  let Verdict = {
     CONTINUE: 0,
     WIN: 1,
     FAIL: 2,
@@ -229,7 +246,7 @@ window.Game = (function () {
    * можно завершать или false если нет.
    * @type {Object.<Level, function(Object):boolean>}
    */
-  var LevelsRules = {};
+  let LevelsRules = {};
 
   /**
    * Уровень считается пройденным, если был выпущен файлболл и он улетел
@@ -238,11 +255,11 @@ window.Game = (function () {
    * @return {Verdict}
    */
   LevelsRules[Level.INTRO] = function (state) {
-    var deletedFireballs = state.garbage.filter(function (object) {
+    let deletedFireballs = state.garbage.filter(function (object) {
       return object.type === ObjectType.FIREBALL;
     });
 
-    var fenceHit = deletedFireballs.filter(function (fireball) {
+    let fenceHit = deletedFireballs.filter(function (fireball) {
       // Did we hit the fence?
       return fireball.x < 10 && fireball.y > 240;
     })[0];
@@ -254,7 +271,7 @@ window.Game = (function () {
    * Начальные условия для уровней.
    * @enum {Object.<Level, function>}
    */
-  var LevelsInitialize = {};
+  let LevelsInitialize = {};
 
   /**
    * Первый уровень.
@@ -263,20 +280,20 @@ window.Game = (function () {
    */
   LevelsInitialize[Level.INTRO] = function (state) {
     state.objects.push(
-        // Установка персонажа в начальное положение. Он стоит в крайнем левом
-        // углу экрана, глядя вправо. Скорость перемещения персонажа на этом
-        // уровне равна 2px за кадр.
-        {
-          direction: Direction.RIGHT,
-          height: window.GameConstants.Wizard.getHeight(window.GameConstants.Wizard.width),
-          speed: window.GameConstants.Wizard.speed,
-          sprite: SpriteMap[ObjectType.ME],
-          state: ObjectState.OK,
-          type: ObjectType.ME,
-          width: window.GameConstants.Wizard.width,
-          x: window.GameConstants.Wizard.getX(WIDTH),
-          y: window.GameConstants.Wizard.getY(HEIGHT)
-        }
+      // Установка персонажа в начальное положение. Он стоит в крайнем левом
+      // углу экрана, глядя вправо. Скорость перемещения персонажа на этом
+      // уровне равна 2px за кадр.
+      {
+        direction: Direction.RIGHT,
+        height: window.GameConstants.Wizard.getHeight(window.GameConstants.Wizard.width),
+        speed: window.GameConstants.Wizard.speed,
+        sprite: SpriteMap[ObjectType.ME],
+        state: ObjectState.OK,
+        type: ObjectType.ME,
+        width: window.GameConstants.Wizard.width,
+        x: window.GameConstants.Wizard.getX(WIDTH),
+        y: window.GameConstants.Wizard.getY(HEIGHT)
+      }
     );
 
     return state;
@@ -288,14 +305,14 @@ window.Game = (function () {
    * @param {Element} container
    * @constructor
    */
-  var Game = function (container) {
+  let Game = function (container) {
     this.container = container;
-    this.canvas = document.createElement('canvas');
+    this.canvas = document.createElement(`canvas`);
     this.canvas.width = container.clientWidth;
     this.canvas.height = container.clientHeight;
     this.container.appendChild(this.canvas);
 
-    this.ctx = this.canvas.getContext('2d');
+    this.ctx = this.canvas.getContext(`2d`);
 
     this._onKeyDown = this._onKeyDown.bind(this);
     this._onKeyUp = this._onKeyUp.bind(this);
@@ -312,7 +329,7 @@ window.Game = (function () {
     level: INITIAL_LEVEL,
 
     /** @param {boolean} deactivated */
-    setDeactivated: function (deactivated) {
+    setDeactivated(deactivated) {
       if (this._deactivated === deactivated) {
         return;
       }
@@ -331,7 +348,7 @@ window.Game = (function () {
      * и время проведенное на уровне и в игре.
      * @return {Object}
      */
-    getInitialState: function () {
+    getInitialState() {
       return {
         // Статус игры. Если CONTINUE, то игра продолжается.
         currentStatus: Verdict.CONTINUE,
@@ -366,8 +383,8 @@ window.Game = (function () {
      * Начальные проверки и запуск текущего уровня.
      * @param {boolean=} restart
      */
-    initializeLevelAndStart: function (restart) {
-      restart = typeof restart === 'undefined' ? true : restart;
+    initializeLevelAndStart(restart) {
+      restart = typeof restart === `undefined` ? true : restart;
 
       if (restart || !this.state) {
         // сбросить кэш при перезагрузке уровня
@@ -405,7 +422,7 @@ window.Game = (function () {
      * Временная остановка игры.
      * @param {Verdict=} verdict
      */
-    pauseLevel: function (verdict) {
+    pauseLevel(verdict) {
       if (verdict) {
         this.state.currentStatus = verdict;
       }
@@ -414,7 +431,7 @@ window.Game = (function () {
       this.state.lastUpdated = null;
 
       this._removeGameListeners();
-      window.addEventListener('keydown', this._pauseListener);
+      window.addEventListener(`keydown`, this._pauseListener);
 
       this._drawPauseScreen();
     },
@@ -425,59 +442,59 @@ window.Game = (function () {
      * @private
      * @private
      */
-    _pauseListener: function (evt) {
+    _pauseListener(evt) {
       if (evt.keyCode === 32 && !this._deactivated) {
         evt.preventDefault();
-        var needToRestartTheGame = this.state.currentStatus === Verdict.WIN ||
+        let needToRestartTheGame = this.state.currentStatus === Verdict.WIN ||
           this.state.currentStatus === Verdict.FAIL;
         this.initializeLevelAndStart(needToRestartTheGame);
 
-        window.removeEventListener('keydown', this._pauseListener);
+        window.removeEventListener(`keydown`, this._pauseListener);
       }
     },
 
     /**
      * Отрисовка экрана паузы.
      */
-    _drawPauseScreen: function () {
-      var message;
+    _drawPauseScreen() {
+      let message;
       switch (this.state.currentStatus) {
         case Verdict.WIN:
           if (window.renderStatistics) {
-            var statistics = this._generateStatistics(new Date() - this.state.startTime);
-            var keys = this._shuffleArray(Object.keys(statistics));
+            let statistics = this._generateStatistics(new Date() - this.state.startTime);
+            let keys = this._shuffleArray(Object.keys(statistics));
             window.renderStatistics(this.ctx, keys, keys.map(function (it) {
               return statistics[it];
             }));
             return;
           }
-          message = 'Вы победили Газебо!\nУра!';
+          message = `Вы победили Газебо!\nУра!`;
           break;
         case Verdict.FAIL:
-          message = 'Вы проиграли!';
+          message = `Вы проиграли!`;
           break;
         case Verdict.PAUSE:
-          message = 'Игра на паузе!\nНажмите Пробел, чтобы продолжить';
+          message = `Игра на паузе!\nНажмите Пробел, чтобы продолжить`;
           break;
         case Verdict.INTRO:
-          message = 'Добро пожаловать!\nНажмите Пробел для начала игры';
+          message = `Добро пожаловать!\nНажмите Пробел для начала игры`;
           break;
       }
 
       this._drawMessage(message);
     },
 
-    _generateStatistics: function (time) {
-      var generationIntervalSec = 3000;
-      var minTimeInSec = 1000;
+    _generateStatistics(time) {
+      let generationIntervalSec = 3000;
+      let minTimeInSec = 1000;
 
-      var statistic = {
+      let statistic = {
         'Вы': time
       };
 
-      for (var i = 0; i < NAMES.length; i++) {
-        var diffTime = Math.random() * generationIntervalSec;
-        var userTime = time + (diffTime - generationIntervalSec / 2);
+      for (let i = 0; i < NAMES.length; i++) {
+        let diffTime = Math.random() * generationIntervalSec;
+        let userTime = time + (diffTime - generationIntervalSec / 2);
         if (userTime < minTimeInSec) {
           userTime = minTimeInSec;
         }
@@ -487,21 +504,21 @@ window.Game = (function () {
       return statistic;
     },
 
-    _shuffleArray: function (array) {
-      for (var i = array.length - 1; i > 0; i--) {
-        var j = Math.floor(Math.random() * (i + 1));
-        var temp = array[i];
+    _shuffleArray(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        let j = Math.floor(Math.random() * (i + 1));
+        let temp = array[i];
         array[i] = array[j];
         array[j] = temp;
       }
       return array;
     },
 
-    _drawMessage: function (message) {
-      var ctx = this.ctx;
+    _drawMessage(message) {
+      let ctx = this.ctx;
 
-      var drawCloud = function (x, y, width, heigth) {
-        var offset = 10;
+      let drawCloud = function (x, y, width, heigth) {
+        let offset = 10;
         ctx.beginPath();
         ctx.moveTo(x, y);
         ctx.lineTo(x + offset, y + heigth / 2);
@@ -517,15 +534,15 @@ window.Game = (function () {
         ctx.fill();
       };
 
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+      ctx.fillStyle = `rgba(0, 0, 0, 0.7)`;
       drawCloud(190, 40, 320, 100);
 
-      ctx.fillStyle = 'rgba(256, 256, 256, 1.0)';
+      ctx.fillStyle = `rgba(256, 256, 256, 1.0)`;
       drawCloud(180, 30, 320, 100);
 
-      ctx.fillStyle = '#000';
-      ctx.font = '16px PT Mono';
-      message.split('\n').forEach(function (line, i) {
+      ctx.fillStyle = `#000`;
+      ctx.font = `16px PT Mono`;
+      message.split(`\n`).forEach(function (line, i) {
         ctx.fillText(line, 200, 80 + 20 * i);
       });
     },
@@ -535,8 +552,8 @@ window.Game = (function () {
      * @param {function} callback
      * @private
      */
-    _preloadImagesForLevel: function (callback) {
-      if (typeof this._imagesArePreloaded === 'undefined') {
+    _preloadImagesForLevel(callback) {
+      if (typeof this._imagesArePreloaded === `undefined`) {
         this._imagesArePreloaded = [];
       }
 
@@ -545,13 +562,13 @@ window.Game = (function () {
         return;
       }
 
-      var keys = Object.keys(SpriteMap);
-      var imagesToGo = keys.length;
+      let keys = Object.keys(SpriteMap);
+      let imagesToGo = keys.length;
 
-      var self = this;
+      let self = this;
 
-      var loadSprite = function (sprite) {
-        var image = new Image(sprite.width, sprite.height);
+      let loadSprite = function (sprite) {
+        let image = new Image(sprite.width, sprite.height);
         image.onload = function () {
           sprite.image = image;
           if (--imagesToGo === 0) {
@@ -562,7 +579,7 @@ window.Game = (function () {
         image.src = sprite.url;
       };
 
-      for (var i = 0; i < keys.length; i++) {
+      for (let i = 0; i < keys.length; i++) {
         loadSprite(SpriteMap[keys[i]]);
       }
     },
@@ -573,9 +590,9 @@ window.Game = (function () {
      * должны исчезнуть.
      * @param {number} delta Время, прошеднее с отрисовки прошлого кадра.
      */
-    updateObjects: function (delta) {
+    updateObjects(delta) {
       // Персонаж.
-      var me = this.state.objects.filter(function (object) {
+      let me = this.state.objects.filter(function (object) {
         return object.type === ObjectType.ME;
       })[0];
 
@@ -598,7 +615,7 @@ window.Game = (function () {
       this.state.garbage = [];
 
       // Убирает в garbage не используемые на карте объекты.
-      var remainingObjects = this.state.objects.filter(function (object) {
+      let remainingObjects = this.state.objects.filter(function (object) {
         ObjectsBehaviour[object.type](object, this.state, delta);
 
         if (object.state === ObjectState.DISPOSED) {
@@ -615,7 +632,7 @@ window.Game = (function () {
     /**
      * Проверка статуса текущего уровня.
      */
-    checkStatus: function () {
+    checkStatus() {
       // Нет нужны запускать проверку, нужно ли останавливать уровень, если
       // заранее известно, что да.
       if (this.state.currentStatus !== Verdict.CONTINUE) {
@@ -632,7 +649,7 @@ window.Game = (function () {
            * @return {Verdict}
            */
           function (state) {
-            var me = state.objects.filter(function (object) {
+            let me = state.objects.filter(function (object) {
               return object.type === ObjectType.ME;
             })[0];
 
@@ -668,9 +685,9 @@ window.Game = (function () {
       // Цикл продолжается до тех пор, пока какая-либо из проверок не вернет
       // любое другое состояние кроме CONTINUE или пока не пройдут все
       // проверки. После этого состояние сохраняется.
-      var allChecks = this.commonRules.concat(LevelsRules[this.level]);
-      var currentCheck = Verdict.CONTINUE;
-      var currentRule;
+      let allChecks = this.commonRules.concat(LevelsRules[this.level]);
+      let currentCheck = Verdict.CONTINUE;
+      let currentRule;
 
       while (currentCheck === Verdict.CONTINUE && allChecks.length) {
         currentRule = allChecks.shift();
@@ -687,7 +704,7 @@ window.Game = (function () {
      * экран.
      * @param {Verdict} status
      */
-    setGameStatus: function (status) {
+    setGameStatus(status) {
       if (this.state.currentStatus !== status) {
         this.state.currentStatus = status;
       }
@@ -696,7 +713,7 @@ window.Game = (function () {
     /**
      * Отрисовка всех объектов на экране.
      */
-    render: function () {
+    render() {
       // Удаление всех отрисованных на странице элементов.
       this.ctx.clearRect(0, 0, WIDTH, HEIGHT);
 
@@ -704,8 +721,8 @@ window.Game = (function () {
       // их координатам и направлению.
       this.state.objects.forEach(function (object) {
         if (object.sprite) {
-          var reversed = object.direction & Direction.LEFT;
-          var sprite = SpriteMap[object.type + (reversed ? REVERSED : '')] || SpriteMap[object.type];
+          let reversed = object.direction & Direction.LEFT;
+          let sprite = SpriteMap[object.type + (reversed ? REVERSED : ``)] || SpriteMap[object.type];
           this.ctx.drawImage(sprite.image, object.x, object.y, object.width, object.height);
         }
       }, this);
@@ -717,12 +734,12 @@ window.Game = (function () {
      * проверку текущего раунда. Рекурсивно продолжается до тех пор, пока
      * проверка не вернет состояние FAIL, WIN или PAUSE.
      */
-    update: function () {
+    update() {
       if (!this.state.lastUpdated) {
         this.state.lastUpdated = Date.now();
       }
 
-      var delta = (Date.now() - this.state.lastUpdated) / 10;
+      let delta = (Date.now() - this.state.lastUpdated) / 10;
       this.updateObjects(delta);
       this.checkStatus();
 
@@ -748,7 +765,7 @@ window.Game = (function () {
      * @param {KeyboardEvent} evt [description]
      * @private
      */
-    _onKeyDown: function (evt) {
+    _onKeyDown(evt) {
       switch (evt.keyCode) {
         case 37:
           this.state.keysPressed.LEFT = true;
@@ -773,7 +790,7 @@ window.Game = (function () {
      * @param {KeyboardEvent} evt [description]
      * @private
      */
-    _onKeyUp: function (evt) {
+    _onKeyUp(evt) {
       switch (evt.keyCode) {
         case 37:
           this.state.keysPressed.LEFT = false;
@@ -795,21 +812,21 @@ window.Game = (function () {
     },
 
     /** @private */
-    _initializeGameListeners: function () {
-      window.addEventListener('keydown', this._onKeyDown);
-      window.addEventListener('keyup', this._onKeyUp);
+    _initializeGameListeners() {
+      window.addEventListener(`keydown`, this._onKeyDown);
+      window.addEventListener(`keyup`, this._onKeyUp);
     },
 
     /** @private */
-    _removeGameListeners: function () {
-      window.removeEventListener('keydown', this._onKeyDown);
-      window.removeEventListener('keyup', this._onKeyUp);
+    _removeGameListeners() {
+      window.removeEventListener(`keydown`, this._onKeyDown);
+      window.removeEventListener(`keyup`, this._onKeyUp);
     }
   };
 
   Game.Verdict = Verdict;
 
-  var game = new Game(document.querySelector('.demo'));
+  let game = new Game(document.querySelector(`.demo`));
 
   window.restartGame = function (wizardRightImage, wizardLeftImage) {
     SpriteMap[ObjectType.ME].url = wizardRightImage;
@@ -819,7 +836,7 @@ window.Game = (function () {
     game.setGameStatus(Verdict.INTRO);
   };
 
-  window.restartGame('img/wizard.gif', 'img/wizard-reversed.gif');
+  window.restartGame(`img/wizard.gif`, `img/wizard-reversed.gif`);
 
   return game;
 })();
