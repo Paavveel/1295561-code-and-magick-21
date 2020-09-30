@@ -1,15 +1,19 @@
 "use strict";
 
-let CLOUD_WIDTH = 420;
-let CLOUD_HEIGHT = 270;
-let CLOUD_X = 100;
-let CLOUD_Y = 10;
-let GAP = 10;
-let COLUMN_GAP = 40;
-let BAR_WIDTH = 40;
-let BAR_HEIGHT = 150;
+const CLOUD_WIDTH = 420;
+const CLOUD_HEIGHT = 270;
+const CLOUD_X = 100;
+const CLOUD_Y = 10;
+const TEXT_X = 120;
+const TEXT_Y = 30;
+const GAP = 10;
+const TEXT_GAP = 20;
+const COLUMN_GAP = 40;
+const BAR_WIDTH = 40;
+const BAR_HEIGHT = 150;
+const SCORE_HEIGHT = 230;
+const MAX_COLOR = 100;
 
-const COLORS = [`#ff0000`, `#98d9d9`, `#98d9d9`, `#98d9d9`];
 
 const renderCloud = function (ctx, x, y, color) {
   ctx.fillStyle = color;
@@ -28,6 +32,10 @@ const getMaxElement = function (arr) {
   return maxElement;
 };
 
+const getRandomInt = function (max) {
+  return Math.floor(Math.random() * Math.floor(max));
+};
+
 window.renderStatistics = function (ctx, players, times) {
   renderCloud(ctx, CLOUD_X + GAP, CLOUD_Y + GAP, `rgba(0, 0, 0, 0.7)`);
   renderCloud(ctx, CLOUD_X, CLOUD_Y, `#fff`);
@@ -35,21 +43,27 @@ window.renderStatistics = function (ctx, players, times) {
   ctx.fillStyle = `#000`;
   ctx.textBaseline = `hanging`;
   ctx.font = `16px PT Mono`;
-  ctx.fillText(`Ура вы победили!`, 120, 30);
-  ctx.fillText(`Список результатов:`, 120, 50);
+  ctx.fillText(`Ура вы победили!`, TEXT_X, TEXT_Y);
+  ctx.fillText(`Список результатов:`, TEXT_X, TEXT_Y + TEXT_GAP);
 
   let maxTime = getMaxElement(times);
 
   for (let i = 0; i < players.length; i++) {
+    let roundedTime = Math.round(times[i]);
+
     ctx.fillText(players[i], CLOUD_X + COLUMN_GAP + (COLUMN_GAP + BAR_WIDTH) * i, CLOUD_HEIGHT - GAP);
 
     let currentBarHeight = (BAR_HEIGHT * times[i]) / maxTime;
 
     ctx.save();
-    ctx.fillStyle = COLORS[i];
+    if (players[i] === `Вы`) {
+      ctx.fillStyle = `rgba(255, 0, 0, 1)`;
+    } else {
+      ctx.fillStyle = `hsl(237, 100%, ${getRandomInt(MAX_COLOR)}%)`;
+    }
     ctx.fillRect(CLOUD_X + COLUMN_GAP + (COLUMN_GAP + BAR_WIDTH) * i, CLOUD_HEIGHT - GAP * 2, BAR_WIDTH, -currentBarHeight);
     ctx.restore();
 
-    ctx.fillText(Math.round(times[i]), CLOUD_X + COLUMN_GAP + (COLUMN_GAP + BAR_WIDTH) * i, -currentBarHeight + 230);
+    ctx.fillText(roundedTime, CLOUD_X + COLUMN_GAP + (COLUMN_GAP + BAR_WIDTH) * i, -currentBarHeight + SCORE_HEIGHT);
   }
 };
