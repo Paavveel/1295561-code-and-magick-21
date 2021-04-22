@@ -14,7 +14,6 @@ const BAR_HEIGHT = 150;
 const SCORE_HEIGHT = 230;
 const MAX_COLOR = 100;
 
-
 const renderCloud = function (ctx, x, y, color) {
   ctx.fillStyle = color;
   ctx.fillRect(x, y, CLOUD_WIDTH, CLOUD_HEIGHT);
@@ -51,7 +50,11 @@ window.renderStatistics = function (ctx, players, times) {
   for (let i = 0; i < players.length; i++) {
     let roundedTime = Math.round(times[i]);
 
-    ctx.fillText(players[i], CLOUD_X + COLUMN_GAP + (COLUMN_GAP + BAR_WIDTH) * i, CLOUD_HEIGHT - GAP);
+    ctx.fillText(
+      players[i],
+      CLOUD_X + COLUMN_GAP + (COLUMN_GAP + BAR_WIDTH) * i,
+      CLOUD_HEIGHT - GAP
+    );
 
     let currentBarHeight = (BAR_HEIGHT * times[i]) / maxTime;
 
@@ -61,9 +64,18 @@ window.renderStatistics = function (ctx, players, times) {
     } else {
       ctx.fillStyle = `hsl(237, 100%, ${getRandomInt(MAX_COLOR)}%)`;
     }
-    ctx.fillRect(CLOUD_X + COLUMN_GAP + (COLUMN_GAP + BAR_WIDTH) * i, CLOUD_HEIGHT - GAP * 2, BAR_WIDTH, -currentBarHeight);
+    ctx.fillRect(
+      CLOUD_X + COLUMN_GAP + (COLUMN_GAP + BAR_WIDTH) * i,
+      CLOUD_HEIGHT - GAP * 2,
+      BAR_WIDTH,
+      -currentBarHeight
+    );
     ctx.restore();
 
-    ctx.fillText(roundedTime, CLOUD_X + COLUMN_GAP + (COLUMN_GAP + BAR_WIDTH) * i, -currentBarHeight + SCORE_HEIGHT);
+    ctx.fillText(
+      roundedTime,
+      CLOUD_X + COLUMN_GAP + (COLUMN_GAP + BAR_WIDTH) * i,
+      -currentBarHeight + SCORE_HEIGHT
+    );
   }
 };
