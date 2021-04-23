@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 const CLOUD_WIDTH = 420;
 const CLOUD_HEIGHT = 270;
@@ -14,15 +14,15 @@ const BAR_HEIGHT = 150;
 const SCORE_HEIGHT = 230;
 const MAX_COLOR = 100;
 
-const renderCloud = function (ctx, x, y, color) {
+const renderCloud = (ctx, x, y, color) => {
   ctx.fillStyle = color;
   ctx.fillRect(x, y, CLOUD_WIDTH, CLOUD_HEIGHT);
 };
 
-const getMaxElement = function (arr) {
+const getMaxElement = (arr) => {
   let maxElement = arr[0];
 
-  for (let i = 1; i < arr.length; i++) {
+  for (let i = 1; i < arr.length; i += 1) {
     if (arr[i] > maxElement) {
       maxElement = arr[i];
     }
@@ -31,24 +31,22 @@ const getMaxElement = function (arr) {
   return maxElement;
 };
 
-const getRandomInt = function (max) {
-  return Math.floor(Math.random() * Math.floor(max));
-};
+const getRandomInt = (max) => Math.floor(Math.random() * Math.floor(max));
 
-window.renderStatistics = function (ctx, players, times) {
-  renderCloud(ctx, CLOUD_X + GAP, CLOUD_Y + GAP, `rgba(0, 0, 0, 0.7)`);
-  renderCloud(ctx, CLOUD_X, CLOUD_Y, `#fff`);
+window.renderStatistics = (ctx, players, times) => {
+  renderCloud(ctx, CLOUD_X + GAP, CLOUD_Y + GAP, 'rgba(0, 0, 0, 0.7)');
+  renderCloud(ctx, CLOUD_X, CLOUD_Y, '#fff');
 
-  ctx.fillStyle = `#000`;
-  ctx.textBaseline = `hanging`;
-  ctx.font = `16px PT Mono`;
-  ctx.fillText(`Ура вы победили!`, TEXT_X, TEXT_Y);
-  ctx.fillText(`Список результатов:`, TEXT_X, TEXT_Y + TEXT_GAP);
+  ctx.fillStyle = '#000';
+  ctx.textBaseline = 'hanging';
+  ctx.font = '16px PT Mono';
+  ctx.fillText('Ура вы победили!', TEXT_X, TEXT_Y);
+  ctx.fillText('Список результатов:', TEXT_X, TEXT_Y + TEXT_GAP);
 
-  let maxTime = getMaxElement(times);
+  const maxTime = getMaxElement(times);
 
-  for (let i = 0; i < players.length; i++) {
-    let roundedTime = Math.round(times[i]);
+  for (let i = 0; i < players.length; i += 1) {
+    const roundedTime = Math.round(times[i]);
 
     ctx.fillText(
       players[i],
@@ -56,11 +54,11 @@ window.renderStatistics = function (ctx, players, times) {
       CLOUD_HEIGHT - GAP
     );
 
-    let currentBarHeight = (BAR_HEIGHT * times[i]) / maxTime;
+    const currentBarHeight = (BAR_HEIGHT * times[i]) / maxTime;
 
     ctx.save();
-    if (players[i] === `Вы`) {
-      ctx.fillStyle = `rgba(255, 0, 0, 1)`;
+    if (players[i] === 'Вы') {
+      ctx.fillStyle = 'rgba(255, 0, 0, 1)';
     } else {
       ctx.fillStyle = `hsl(237, 100%, ${getRandomInt(MAX_COLOR)}%)`;
     }
@@ -79,3 +77,4 @@ window.renderStatistics = function (ctx, players, times) {
     );
   }
 };
+
