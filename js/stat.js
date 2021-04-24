@@ -22,7 +22,7 @@ const renderCloud = (ctx, x, y, color) => {
 const getMaxElement = (arr) => {
   let maxElement = arr[0];
 
-  for (let i = 1; i < arr.length; i += 1) {
+  for (let i = 1; i < arr.length; i++) {
     if (arr[i] > maxElement) {
       maxElement = arr[i];
     }
@@ -45,7 +45,7 @@ window.renderStatistics = (ctx, players, times) => {
 
   const maxTime = getMaxElement(times);
 
-  for (let i = 0; i < players.length; i += 1) {
+  for (let i = 0; i < players.length; i++) {
     const roundedTime = Math.round(times[i]);
 
     ctx.fillText(
@@ -77,4 +77,3 @@ window.renderStatistics = (ctx, players, times) => {
     );
   }
 };
-
