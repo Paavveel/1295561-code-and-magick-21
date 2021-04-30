@@ -3,7 +3,7 @@
   "plugins": ["prettier"],
   "rules": {
     "strict": "off",
-    "no-undef": "warn",
+    "no-undef": "off",
     // "prettier/prettier": "error",
     "no-console": "off",
     "no-plusplus": "off"

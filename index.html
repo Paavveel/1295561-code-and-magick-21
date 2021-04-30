@@ -77,7 +77,7 @@
       <div class="demo"></div>
 
       <div class="setup-open">
-        <img src="img/user-1.jpg" class="setup-open-icon" />
+        <img src="img/user-1.jpg" class="setup-open-icon" tabindex="0" />
       </div>
     </header>
 
@@ -86,6 +86,7 @@
         class="setup-wizard-form"
         method="post"
         enctype="multipart/form-data"
+        action="https://21.javascript.pages.academy/code-and-magick"
         autocomplete="off"
       >
         <div class="setup-title">
@@ -98,6 +99,7 @@
               <input
                 type="text"
                 name="username"
+                minlength="2"
                 maxlength="25"
                 required
                 class="setup-user-name"
@@ -106,7 +108,7 @@
             </label>
           </div>
 
-          <span class="setup-close">&times;</span>
+          <span class="setup-close" tabindex="0">&times;</span>
         </div>
 
         <div class="setup-artifacts-shop">
