@@ -30,12 +30,21 @@ const COAT_COLORS = [
   'rgb(0, 0, 0)',
 ];
 const EYES_COLORS = ['black', 'red', 'blue', 'yellow', 'green'];
+const FIREBALL_COLORS = ['#ee4830', '#30a8ee', '#5ce6c0', '#e848d5', '#e6e848'];
 const WIZARDS_AMOUNT = 4;
+const MIN_NAME_LENGTH = 2;
+const MAX_NAME_LENGTH = 25;
 const wizardsArray = [];
 
-const userDialog = document.querySelector('.setup');
-userDialog.classList.remove('hidden');
-const similarListElement = userDialog.querySelector('.setup-similar-list');
+const setup = document.querySelector('.setup');
+const setupOpen = document.querySelector('.setup-open');
+const setupClose = setup.querySelector('.setup-close');
+const setupUserName = setup.querySelector('.setup-user-name');
+const wizardCoat = setup.querySelector('.setup-wizard .wizard-coat');
+const wizardEyes = setup.querySelector('.setup-wizard .wizard-eyes');
+const fireball = setup.querySelector('.setup-fireball-wrap');
+
+const similarListElement = setup.querySelector('.setup-similar-list');
 
 function getRandomNumber(max) {
   return Math.floor(Math.random() * max);
@@ -84,4 +93,100 @@ function getFragment(array, func) {
 
 const wizardsFragment = getFragment(wizardsArray, renderWizard);
 similarListElement.append(wizardsFragment);
-userDialog.querySelector('.setup-similar').classList.remove('hidden');
+setup.querySelector('.setup-similar').classList.remove('hidden');
+
+const openUserDialog = () => {
+  setup.classList.remove('hidden');
+};
+const closeUserDialog = () => {
+  setup.classList.add('hidden');
+};
+const onUserDialogEscPress = (evt) => {
+  if (evt.key === 'Escape') {
+    evt.preventDefault();
+    closeUserDialog();
+    document.removeEventListener('keydown', onUserDialogEscPress);
+  }
+};
+
+setupOpen.addEventListener('click', () => {
+  openUserDialog();
+  document.addEventListener('keydown', onUserDialogEscPress);
+});
+setupOpen.addEventListener('keydown', (evt) => {
+  if (evt.key === 'Enter') {
+    openUserDialog();
+  }
+  document.addEventListener('keydown', onUserDialogEscPress);
+});
+
+setupClose.addEventListener('click', () => {
+  closeUserDialog();
+  document.removeEventListener('keydown', onUserDialogEscPress);
+});
+setupClose.addEventListener('keydown', (evt) => {
+  if (evt.key === 'Enter') {
+    closeUserDialog();
+  }
+  document.removeEventListener('keydown', onUserDialogEscPress);
+});
+
+setupUserName.addEventListener('focus', () => {
+  document.removeEventListener('keydown', onUserDialogEscPress);
+});
+setupUserName.addEventListener('blur', () => {
+  document.addEventListener('keydown', onUserDialogEscPress);
+});
+
+setupUserName.addEventListener('input', () => {
+  const nameLength = setupUserName.value.length;
+  if (nameLength < MIN_NAME_LENGTH) {
+    setupUserName.setCustomValidity(
+      `Еще ${MIN_NAME_LENGTH - nameLength} симв.`
+    );
+  } else if (nameLength > MAX_NAME_LENGTH) {
+    setupUserName.setCustomValidity(
+      `Удалите лишние ${nameLength - MAX_NAME_LENGTH} симв.`
+    );
+  } else {
+    setupUserName.setCustomValidity('');
+  }
+  setupUserName.reportValidity();
+});
+
+function sequenceNumber(start, end) {
+  let number = start;
+  return () => {
+    if (number < end) {
+      number++;
+    } else {
+      number = start;
+    }
+    return number;
+  };
+}
+
+const coatCounter = sequenceNumber(0, COAT_COLORS.length - 1);
+const coatInput = setup.querySelector('input[name=coat-color]');
+
+wizardCoat.addEventListener('click', () => {
+  wizardCoat.style.fill = COAT_COLORS[coatCounter()];
+  coatInput.value = wizardCoat.style.fill;
+});
+
+const eyesCounter = sequenceNumber(0, EYES_COLORS.length - 1);
+const eyesInput = setup.querySelector('input[name=eyes-color]');
+
+wizardEyes.addEventListener('click', () => {
+  wizardEyes.style.fill = EYES_COLORS[eyesCounter()];
+  eyesInput.value = wizardEyes.style.fill;
+});
+
+const fireballCounter = sequenceNumber(0, FIREBALL_COLORS.length - 1);
+const fireballInput = setup.querySelector('input[name=fireball-color]');
+
+fireball.addEventListener('click', () => {
+  const fireballCurrentIndex = FIREBALL_COLORS[fireballCounter()];
+  fireball.style.background = fireballCurrentIndex;
+  fireballInput.value = fireballCurrentIndex;
+});
