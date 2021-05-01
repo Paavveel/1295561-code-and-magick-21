@@ -6,7 +6,8 @@
     "no-undef": "off",
     // "prettier/prettier": "error",
     "no-console": "off",
-    "no-plusplus": "off"
+    "no-plusplus": "off",
+    "no-param-reassign": "off"
     // "func-names": "off",
     // "class-methods-use-this": "off"
   }
