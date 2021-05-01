@@ -40,9 +40,6 @@ const setup = document.querySelector('.setup');
 const setupOpen = document.querySelector('.setup-open');
 const setupClose = setup.querySelector('.setup-close');
 const setupUserName = setup.querySelector('.setup-user-name');
-const wizardCoat = setup.querySelector('.setup-wizard .wizard-coat');
-const wizardEyes = setup.querySelector('.setup-wizard .wizard-eyes');
-const fireball = setup.querySelector('.setup-fireball-wrap');
 
 const similarListElement = setup.querySelector('.setup-similar-list');
 
@@ -165,28 +162,30 @@ function sequenceNumber(start, end) {
     return number;
   };
 }
-
-const coatCounter = sequenceNumber(0, COAT_COLORS.length - 1);
+const wizardCoat = setup.querySelector('.setup-wizard .wizard-coat');
 const coatInput = setup.querySelector('input[name=coat-color]');
 
-wizardCoat.addEventListener('click', () => {
-  wizardCoat.style.fill = COAT_COLORS[coatCounter()];
-  coatInput.value = wizardCoat.style.fill;
-});
-
-const eyesCounter = sequenceNumber(0, EYES_COLORS.length - 1);
+const wizardEyes = setup.querySelector('.setup-wizard .wizard-eyes');
 const eyesInput = setup.querySelector('input[name=eyes-color]');
 
-wizardEyes.addEventListener('click', () => {
-  wizardEyes.style.fill = EYES_COLORS[eyesCounter()];
-  eyesInput.value = wizardEyes.style.fill;
-});
-
-const fireballCounter = sequenceNumber(0, FIREBALL_COLORS.length - 1);
+const fireball = setup.querySelector('.setup-fireball-wrap');
 const fireballInput = setup.querySelector('input[name=fireball-color]');
 
-fireball.addEventListener('click', () => {
-  const fireballCurrentIndex = FIREBALL_COLORS[fireballCounter()];
-  fireball.style.background = fireballCurrentIndex;
-  fireballInput.value = fireballCurrentIndex;
-});
+function getSequenceColor(element, array, input) {
+  const arrayCounter = sequenceNumber(0, array.length - 1);
+
+  element.addEventListener('click', () => {
+    const currentIndex = array[arrayCounter()];
+    if (element.tagName === 'DIV') {
+      element.style.background = currentIndex;
+    } else {
+      element.style.fill = currentIndex;
+    }
+
+    input.value = currentIndex;
+  });
+}
+
+getSequenceColor(fireball, FIREBALL_COLORS, fireballInput);
+getSequenceColor(wizardCoat, COAT_COLORS, coatInput);
+getSequenceColor(wizardEyes, EYES_COLORS, eyesInput);
