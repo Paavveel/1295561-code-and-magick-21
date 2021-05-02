@@ -46,6 +46,16 @@ const similarListElement = setup.querySelector('.setup-similar-list');
 function getRandomNumber(max) {
   return Math.floor(Math.random() * max);
 }
+function isEscEvent(evt, action) {
+  if (evt.key === 'Escape') {
+    action();
+  }
+}
+function isEnterEvent(evt, action) {
+  if (evt.key === 'Enter') {
+    action();
+  }
+}
 
 function getRandomArray(names, surnames, coat, eyes) {
   const randomName = getRandomNumber(names.length);
@@ -99,11 +109,9 @@ const closeUserDialog = () => {
   setup.classList.add('hidden');
 };
 const onUserDialogEscPress = (evt) => {
-  if (evt.key === 'Escape') {
-    evt.preventDefault();
-    closeUserDialog();
-    document.removeEventListener('keydown', onUserDialogEscPress);
-  }
+  evt.preventDefault();
+  isEscEvent(evt, closeUserDialog);
+  document.removeEventListener('keydown', onUserDialogEscPress);
 };
 
 setupOpen.addEventListener('click', () => {
@@ -111,9 +119,7 @@ setupOpen.addEventListener('click', () => {
   document.addEventListener('keydown', onUserDialogEscPress);
 });
 setupOpen.addEventListener('keydown', (evt) => {
-  if (evt.key === 'Enter') {
-    openUserDialog();
-  }
+  isEnterEvent(evt, openUserDialog);
   document.addEventListener('keydown', onUserDialogEscPress);
 });
 
@@ -122,9 +128,7 @@ setupClose.addEventListener('click', () => {
   document.removeEventListener('keydown', onUserDialogEscPress);
 });
 setupClose.addEventListener('keydown', (evt) => {
-  if (evt.key === 'Enter') {
-    closeUserDialog();
-  }
+  isEnterEvent(evt, closeUserDialog);
   document.removeEventListener('keydown', onUserDialogEscPress);
 });
 
@@ -171,11 +175,11 @@ const eyesInput = setup.querySelector('input[name=eyes-color]');
 const fireball = setup.querySelector('.setup-fireball-wrap');
 const fireballInput = setup.querySelector('input[name=fireball-color]');
 
-function getSequenceColor(element, array, input) {
-  const arrayCounter = sequenceNumber(0, array.length - 1);
+function getSequenceColor(element, color, input) {
+  const colorCounter = sequenceNumber(0, color.length - 1);
 
   element.addEventListener('click', () => {
-    const currentIndex = array[arrayCounter()];
+    const currentIndex = color[colorCounter()];
     if (element.tagName === 'DIV') {
       element.style.background = currentIndex;
     } else {
