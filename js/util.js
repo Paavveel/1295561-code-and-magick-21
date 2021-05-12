@@ -1,9 +1,9 @@
 (() => {
   'use strict';
 
-  function getRandomNumber(max) {
-    return Math.floor(Math.random() * max);
-  }
+  // function getRandomNumber(max) {
+  //   return Math.floor(Math.random() * max);
+  // }
   function isEscEvent(evt, action) {
     if (evt.key === 'Escape') {
       action();
@@ -15,28 +15,28 @@
     }
   }
 
-  function getRandomArray(names, surnames, coat, eyes) {
-    const randomName = getRandomNumber(names.length);
-    const randomSurname = getRandomNumber(surnames.length);
-    const randomCoat = getRandomNumber(coat.length);
-    const randomEye = getRandomNumber(eyes.length);
+  // function getRandomArray(names, surnames, coat, eyes) {
+  //   const randomName = getRandomNumber(names.length);
+  //   const randomSurname = getRandomNumber(surnames.length);
+  //   const randomCoat = getRandomNumber(coat.length);
+  //   const randomEye = getRandomNumber(eyes.length);
 
-    const randomObject = {};
+  //   const randomObject = {};
 
-    randomObject.name = `${names[randomName]} ${surnames[randomSurname]}`;
-    randomObject.coatColor = coat[randomCoat];
-    randomObject.eyesColor = eyes[randomEye];
+  //   randomObject.name = `${names[randomName]} ${surnames[randomSurname]}`;
+  //   randomObject.coatColor = coat[randomCoat];
+  //   randomObject.eyesColor = eyes[randomEye];
 
-    return randomObject;
-  }
+  //   return randomObject;
+  // }
 
-  function getFragment(array, func) {
-    const fragment = document.createDocumentFragment();
-    for (let i = 0; i < array.length; i++) {
-      fragment.append(func(array[i]));
-    }
-    return fragment;
-  }
+  // function getFragment(array, func) {
+  //   const fragment = document.createDocumentFragment();
+  //   for (let i = 0; i < window.WIZARDS_AMOUNT; i++) {
+  //     fragment.append(func(array[i]));
+  //   }
+  //   return fragment;
+  // }
 
   function sequenceNumber(start, end) {
     let number = start;
@@ -68,12 +68,6 @@
   window.util = {
     isEscEvent,
     isEnterEvent,
-    getFragment,
-    getRandomArray,
     getSequenceColor,
   };
-})();
-(() => {
-  'use strict';
-
 })();
