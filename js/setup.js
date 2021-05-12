@@ -6,18 +6,19 @@
   const setupClose = setup.querySelector('.setup-close');
   const setupUserName = setup.querySelector('.setup-user-name');
   const similarListElement = setup.querySelector('.setup-similar-list');
+  const form = setup.querySelector('.setup-wizard-form');
 
-  const wizardsArray = [];
-  for (let i = 0; i < window.data.WIZARDS_AMOUNT; i++) {
-    wizardsArray.push(
-      window.util.getRandomArray(
-        window.data.NAMES,
-        window.data.SURNAMES,
-        window.data.COAT_COLORS,
-        window.data.EYES_COLORS
-      )
-    );
-  }
+  // const wizardsArray = [];
+  // for (let i = 0; i < window.data.WIZARDS_AMOUNT; i++) {
+  //   wizardsArray.push(
+  //     window.util.getRandomArray(
+  //       window.data.NAMES,
+  //       window.data.SURNAMES,
+  //       window.data.COAT_COLORS,
+  //       window.data.EYES_COLORS
+  //     )
+  //   );
+  // }
 
   const wizardTemplate = document
     .querySelector('#similar-wizard-template')
@@ -28,16 +29,60 @@
 
     wizardElement.querySelector('.setup-similar-label').textContent =
       array.name;
-    wizardElement.querySelector('.wizard-coat').style.fill = array.coatColor;
-    wizardElement.querySelector('.wizard-eyes').style.fill = array.eyesColor;
+    wizardElement.querySelector('.wizard-coat').style.fill = array.colorCoat;
+    wizardElement.querySelector('.wizard-eyes').style.fill = array.colorEyes;
 
     return wizardElement;
   };
 
-  const wizardsFragment = window.util.getFragment(wizardsArray, renderWizard);
-  similarListElement.append(wizardsFragment);
+  const successHandler = (array) => {
+    const fragment = document.createDocumentFragment();
+    for (let i = 0; i < window.data.WIZARDS_AMOUNT; i++) {
+      fragment.append(renderWizard(array[i]));
+    }
 
-  setup.querySelector('.setup-similar').classList.remove('hidden');
+    similarListElement.append(fragment);
+
+    setup.querySelector('.setup-similar').classList.remove('hidden');
+  };
+
+  const errorHandler = (errorMassage) => {
+    const element = document.createElement('div');
+    element.style =
+      'z-index: 999; margin: 0 auto; text-align: center; bacground-color: red;';
+    element.style.position = 'absolute';
+    element.style.left = 0;
+    element.style.right = 0;
+    element.style.fontSize = '30px';
+
+    element.textContent = errorMassage;
+    document.body.insertAdjacentElement('afterbegin', element);
+  };
+
+  window.backend.load(
+    'GET',
+    'https://21.javascript.pages.academy/code-and-magick/data',
+    successHandler,
+    errorHandler
+  );
+
+  const submitSuccesHandler = () => {
+    setup.classList.add('hidden');
+  };
+
+  const submitHandler = (evt) => {
+    evt.preventDefault();
+
+    window.backend.load(
+      'POST',
+      'https://21.javascript.pages.academy/code-and-magick',
+      submitSuccesHandler,
+      errorHandler,
+      new FormData(form)
+    );
+  };
+
+  form.addEventListener('submit', submitHandler);
 
   const openUserDialog = () => {
     setup.classList.remove('hidden');
