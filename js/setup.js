@@ -37,7 +37,12 @@
 
   const successHandler = (array) => {
     const fragment = document.createDocumentFragment();
-    for (let i = 0; i < window.data.WIZARDS_AMOUNT; i++) {
+    const takeNumber =
+      array.length > window.data.WIZARDS_AMOUNT
+        ? window.data.WIZARDS_AMOUNT
+        : array.length;
+
+    for (let i = 0; i < takeNumber; i++) {
       fragment.append(renderWizard(array[i]));
     }
 
@@ -49,7 +54,7 @@
   const errorHandler = (errorMassage) => {
     const element = document.createElement('div');
     element.style =
-      'z-index: 999; margin: 0 auto; text-align: center; bacground-color: red;';
+      'z-index: 999; margin: 0 auto; text-align: center; background-color: red;';
     element.style.position = 'absolute';
     element.style.left = 0;
     element.style.right = 0;
@@ -61,7 +66,7 @@
 
   window.backend.load(
     'GET',
-    'https://21.javascript.pages.academy/code-and-magick/data',
+    'https://javascript.pages.academy/code-and-magick/data',
     successHandler,
     errorHandler
   );
