@@ -1,9 +1,6 @@
 (() => {
   'use strict';
 
-  // function getRandomNumber(max) {
-  //   return Math.floor(Math.random() * max);
-  // }
   function isEscEvent(evt, action) {
     if (evt.key === 'Escape') {
       action();
@@ -14,29 +11,6 @@
       action();
     }
   }
-
-  // function getRandomArray(names, surnames, coat, eyes) {
-  //   const randomName = getRandomNumber(names.length);
-  //   const randomSurname = getRandomNumber(surnames.length);
-  //   const randomCoat = getRandomNumber(coat.length);
-  //   const randomEye = getRandomNumber(eyes.length);
-
-  //   const randomObject = {};
-
-  //   randomObject.name = `${names[randomName]} ${surnames[randomSurname]}`;
-  //   randomObject.coatColor = coat[randomCoat];
-  //   randomObject.eyesColor = eyes[randomEye];
-
-  //   return randomObject;
-  // }
-
-  // function getFragment(array, func) {
-  //   const fragment = document.createDocumentFragment();
-  //   for (let i = 0; i < window.WIZARDS_AMOUNT; i++) {
-  //     fragment.append(func(array[i]));
-  //   }
-  //   return fragment;
-  // }
 
   function sequenceNumber(start, end) {
     let number = start;
@@ -50,24 +24,23 @@
     };
   }
 
-  function getSequenceColor(element, color, input) {
-    const colorCounter = sequenceNumber(0, color.length - 1);
+  const createErrorMassage = (massage) => {
+    const element = document.createElement('div');
+    element.style =
+      'z-index: 999; margin: 0 auto; text-align: center; background-color: red;';
+    element.style.position = 'absolute';
+    element.style.left = 0;
+    element.style.right = 0;
+    element.style.fontSize = '30px';
 
-    element.addEventListener('click', () => {
-      const currentIndex = color[colorCounter()];
-      if (element.tagName === 'DIV') {
-        element.style.background = currentIndex;
-      } else {
-        element.style.fill = currentIndex;
-      }
-
-      input.value = currentIndex;
-    });
-  }
+    element.textContent = massage;
+    document.body.insertAdjacentElement('afterbegin', element);
+  };
 
   window.util = {
     isEscEvent,
     isEnterEvent,
-    getSequenceColor,
+    sequenceNumber,
+    createErrorMassage,
   };
 })();

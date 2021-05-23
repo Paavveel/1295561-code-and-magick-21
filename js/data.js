@@ -1,27 +1,6 @@
 (() => {
   'use strict';
 
-  // const NAMES = [
-  //   'Иван',
-  //   'Хуан',
-  //   'Себастьян',
-  //   'Мария',
-  //   'Кристоф',
-  //   'Виктор',
-  //   'Юлия',
-  //   'Люпита',
-  //   'Вашингтон',
-  // ];
-  // const SURNAMES = [
-  //   'да Марья',
-  //   'Верон',
-  //   'Мирабелла',
-  //   'Вальц',
-  //   'Онопко',
-  //   'Топольницкая',
-  //   'Нионго',
-  //   'Ирвинг',
-  // ];
   const COAT_COLORS = [
     'rgb(101, 137, 164)',
     'rgb(241, 43, 107)',
@@ -42,6 +21,9 @@
   const MIN_NAME_LENGTH = 2;
   const MAX_NAME_LENGTH = 25;
 
+  let coatColor;
+  let eyesColor;
+
   window.data = {
     COAT_COLORS,
     EYES_COLORS,
@@ -49,5 +31,7 @@
     WIZARDS_AMOUNT,
     MIN_NAME_LENGTH,
     MAX_NAME_LENGTH,
+    coatColor,
+    eyesColor,
   };
 })();
