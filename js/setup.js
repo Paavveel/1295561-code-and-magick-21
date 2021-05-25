@@ -85,6 +85,7 @@
       default:
         break;
     }
+    const debouncer = window.util.debounce(window.script.updateWizards);
 
     element.addEventListener('click', () => {
       const currentIndex = color[colorCounter()];
@@ -109,7 +110,8 @@
       }
 
       input.value = currentIndex;
-      window.script.updateWizards();
+
+      debouncer();
     });
   }
 

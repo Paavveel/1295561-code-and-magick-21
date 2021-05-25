@@ -37,7 +37,7 @@
     document.body.insertAdjacentElement('afterbegin', element);
   };
 
-  const DEBOUNCE_INTERVAL = 300;
+  const DEBOUNCE_INTERVAL = 500;
 
   const debounce = (cb) => {
     let lastTimeout = null;
