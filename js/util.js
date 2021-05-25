@@ -37,10 +37,26 @@
     document.body.insertAdjacentElement('afterbegin', element);
   };
 
+  const DEBOUNCE_INTERVAL = 300;
+
+  const debounce = (cb) => {
+    let lastTimeout = null;
+
+    return (...parameters) => {
+      if (lastTimeout) {
+        clearTimeout(lastTimeout);
+      }
+      lastTimeout = setTimeout(() => {
+        cb(...parameters);
+      }, DEBOUNCE_INTERVAL);
+    };
+  };
+
   window.util = {
     isEscEvent,
     isEnterEvent,
     sequenceNumber,
     createErrorMassage,
+    debounce,
   };
 })();
