@@ -18,12 +18,16 @@
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^3.4.0",
-    "prettier": "^2.2.1"
+    "prettier": "^2.2.1",
+    "webpack": "5.37.1",
+    "webpack-cli": "4.7.0"
   },
   "license": "MIT",
   "dependencies": {},
   "scripts": {
-    "test": "eslint js/"
+    "test": "eslint js/",
+    "build": "webpack --mode production",
+    "build.dev": "webpack --mode development"
   },
   "engines": {
     "node": "8.11"
